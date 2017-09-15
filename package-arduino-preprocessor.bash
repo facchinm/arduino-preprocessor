@@ -123,7 +123,8 @@ LDFLAGS="`clang/bin/llvm-config --ldflags` -static-libstdc++"
 LLVMLIBS=`clang/bin/llvm-config --libs --system-libs`
 CLANGLIBS=`ls clang/lib/libclang*.a | sed s/.*libclang/-lclang/ | sed s/.a$//`
 SOURCES="main.cpp ArduinoDiagnosticConsumer.cpp CommandLine.cpp IdentifiersList.cpp CodeCompletion.cpp"
-$CXX $SOURCES -o objdir/arduino-preprocessor $CXXFLAGS $LDFLAGS $START_GROUP $LLVMLIBS $CLANGLIBS $END_GROUP
+$CXX -c $SOURCES $CXXFLAGS
+$CXX -shared -o libarduino-preprocessor.so *.o $CXXFLAGS $LDFLAGS $START_GROUP $LLVMLIBS $CLANGLIBS $END_GROUP
 strip objdir/*
 
 rm -f arduino-preprocessor-${OUTPUT_VERSION}-${OUTPUT_TAG}.tar.bz2

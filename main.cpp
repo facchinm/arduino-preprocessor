@@ -51,6 +51,7 @@
 #include "CodeCompletion.hpp"
 #include "IdentifiersList.hpp"
 #include "utils.hpp"
+#include "arduino-preprocessor.h"
 
 using namespace clang;
 using namespace clang::ast_matchers;
@@ -274,7 +275,7 @@ public:
     }
 };
 
-int main(int argc, const char **argv) {
+const char* preprocess(int argc, const char **argv) {
     CommonOptionsParser optParser = doCommandLineParsing(argc, argv);
     ClangTool tool(optParser.getCompilations(), optParser.getSourcePathList());
 
@@ -288,15 +289,15 @@ int main(int argc, const char **argv) {
     int res = tool.run(newFrontendActionFactory<INOPreprocessAction>().get());
 
     if (outputPreprocessedSketch) {
-        cout << preprocessedSketch;
+        //cout << preprocessedSketch;
     }
 
     if (outputCodeCompletions) {
         int line = FindRealLineForCodeCompletion(preprocessedSketch, codeCompleteFilename, codeCompleteLine);
         if (line != -1) {
-            DoCodeCompletion(optParser.getSourcePathList()[0], preprocessedSketch, line, codeCompleteCol);
+            return DoCodeCompletion(optParser.getSourcePathList()[0], preprocessedSketch, line, codeCompleteCol);
         }
     }
 
-    return res;
+    return preprocessedSketch.c_str();
 }

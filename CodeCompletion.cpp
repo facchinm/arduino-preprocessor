@@ -129,7 +129,9 @@ int FindRealLineForCodeCompletion(string &code, string &filename, int line) {
     return -1;
 }
 
-void DoCodeCompletion(const string &filename, const string &code, int line, int col) {
+static string codeComplete;
+
+const char* DoCodeCompletion(const string &filename, const string &code, int line, int col) {
     CompilerInstance ci;
     ci.createDiagnostics();
 
@@ -175,5 +177,7 @@ void DoCodeCompletion(const string &filename, const string &code, int line, int 
         action.EndSourceFile();
     }
 
-    cout << ccConsumer->GetJSON()->dump();
+	codeComplete = ccConsumer->GetJSON()->dump();
+
+    return codeComplete.c_str();
 }

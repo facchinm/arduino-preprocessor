@@ -33,4 +33,4 @@ using namespace std;
 
 int FindRealLineForCodeCompletion(string &code, string &filename, int line);
 
-void DoCodeCompletion(const string &sourceFilename, const string &code, int line, int col);
+const char* DoCodeCompletion(const string &sourceFilename, const string &code, int line, int col);
